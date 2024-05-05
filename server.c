@@ -8,7 +8,8 @@
 #include <errno.h>
 
 #include "cmdline.h"
-#include "intbuffer.c"
+#include "intbuffer.h"
+#include "connections.h"
 
 #define EXECUTION_JUDGES 6
 #define DIFFICULTY_JUDGES 1
@@ -21,8 +22,12 @@ static void startThreads(int executionj, int difficultyj, int tof_hdj);
 static void acceptClients(int port);
 static void die(char *msg);
 
+static void executionRoutine(void);
+static void difficultyRoutine(void);
+static void tofHDRoutines(void);
 
 int main(int argc, char **argv) {
+    if(initConnections() == -1) die("initConnections");
     // evaluate and parse arguments
     cmdlineInit(argc, argv);
     int executionj, difficultyj, tof_hdj;
@@ -113,6 +118,6 @@ static void acceptClients(int port) {
             perror("accept");
             continue;
         }
-        bbPut(client);
+        handleConnection(client);
     }
 }
