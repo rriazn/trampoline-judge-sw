@@ -1,23 +1,6 @@
 /**
  * @file  cmdline.h
  * @brief Command-line argument parsing module.
- *
- * This module is useful for parsing the @c argv array passed to a program via
- * the command line, which can consist of the following argument classes:
- * - The program name (@c argv[0]), which can be retrieved by calling
- *   cmdlineGetProgramName().
- * - Key-value pairs in the form @a "-key=value" or @a "--key=value". These can
- *   be queried using cmdlineGetValueForKey().
- * - Boolean flags in the form @a "-flag" or @a "--flag". The cmdlineGetFlag()
- *   function determines whether a specific flag has been set.
- * - Everything which has neither of the above formats is called an "extra
- *   argument". The user can retrieve the number of extra arguments via
- *   cmdlineGetExtraArgCount() and iterate over them by calling
- *   cmdlineGetExtraArg().
- *
- * Both keys and flags must begin with one or two dashes followed by one
- * alpha-numeric character and an arbitrary number of additional characters
- * (excluding @c '\0' and @c '=').
  */
 
 #ifndef CMDLINE_H
@@ -56,16 +39,6 @@ const char *cmdlineGetProgramName(void);
  *         exists.
  */
 const char *cmdlineGetValueForKey(const char key[]);
-
-/**
- * @brief Checks if a given flag (@a "-flag" or @a "--flag") was passed via the
- *        command line.
- * @param flag Name of the flag. Leading dashes may be omitted.
- * @return @c true if the flag is set, otherwise @c false.
- * @note This function cannot be used to query for the existence of a given key
- *       in a key-value pair. The canonical way for this is to call
- *       cmdlineGetValueForKey() and check its return value.
- */
 
 
 #endif /* CMDLINE_H */
