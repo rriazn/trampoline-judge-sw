@@ -24,8 +24,6 @@
 #define CMDLINE_H
 
 
-#include <stdbool.h>
-
 
 /**
  * @brief Initializes the command-line parsing module.
@@ -68,18 +66,6 @@ const char *cmdlineGetValueForKey(const char key[]);
  *       in a key-value pair. The canonical way for this is to call
  *       cmdlineGetValueForKey() and check its return value.
  */
-bool cmdlineGetFlag(const char flag[]);
-
-/** Retrieves the number of extra command-line arguments. */
-unsigned int cmdlineGetExtraArgCount(void);
-
-/**
- * @brief Retrieves an extra argument.
- * @param index Zero-based index of the extra argument.
- * @return The extra argument with the given index, or @c NULL if @a index is
- *         greater than or equal to the number of extra arguments.
- */
-const char *cmdlineGetExtraArg(unsigned int index);
 
 
 #endif /* CMDLINE_H */
