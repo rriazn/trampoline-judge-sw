@@ -1,6 +1,6 @@
 #ifndef CONNECTIONS_H
 #define CONNECTIONS_H
 
-int initConnections(void);
+int initConnections(int threadCount);
 
 void handleConnection(int clientSocket);

@@ -27,40 +27,20 @@ static void difficultyRoutine(void);
 static void tofHDRoutines(void);
 
 int main(int argc, char **argv) {
-    if(initConnections() == -1) die("initConnections");
     // evaluate and parse arguments
     cmdlineInit(argc, argv);
-    int executionj, difficultyj, tof_hdj;
-    char *executionj_c = cmdlineGetValueForKey("execution_judges");
-    if(NULL == executionj_c) {
-        executionj = EXECUTION_JUDGES;
-    }
-    else {
-        executionj = parseCharToInt(executionj_c, "execution_judges");
-    }
-        
-    char *difficultyj_c = cmdlineGetValueForKey("difficulty_judges");
-    if(NULL == difficultyj_c) {
-        difficultyj = DIFFICULTY_JUDGES;
-    }
-    else {
-        difficultyj = parseCharToInt(difficultyj_c, "difficulty_judges");
-    }
-
-    char *tof_hdj_c = cmdlineGetValueForKey("tof_hd_judges");
-    if(NULL == tof_hdj_c) {
-        tof_hdj = DIFFICULTY_JUDGES;
-    }
-    else {
-        tof_hdj = parseCharToInt(tof_hdj_c, "tof_hd_judges");
-    }
-
-    startThreads(executionj, difficultyj, tof_hdj);
+    
+    if(initConnections() == -1) die("initConnections");
+    
 
     int port = PORT;
     char *port_c = cmdlineGetValueForKey("port");
     if(NULL != port) {
         port = parseCharToInt(port_c, "port");
+        if(port > 65535 || port < 1) {
+            fprintf(stderr, "Invalid port\n");
+            exit(EXIT_FAILURE);
+        }
     }
     
 
@@ -76,10 +56,8 @@ static int parseCharToInt(const char *number, const char *paramName) {
     errno = 0;
     char *endptr;
     long ret = strtol(number, &endptr, 10);
-    if(errno) {
-        perror("strtol");
-        exit(EXIT_FAILURE);
-    }
+    if(errno) 
+        die("strtol")
     if(ret >= INT_MAX) {
         fprintf(stderr, "Number given in %s too big\n", paramName);
         exit(EXIT_FAILURE);
